@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
-</head>
-<body>
+<head th:replace="fragments :: head"></head>
+
+<body class="container">
+
     <h1 th:text="${title}"></h1>
-    <a href="/cheese/add">Add Cheese</a>
-    <p th:unless="${cheeses} and ${cheeses.size()}">no cheese :(</p>
-    <ul>
-        <li th:each="cheese : ${cheeses}" th:text="${cheese}"></li>
-    </ul>
+
+    <nav th:replace="fragments :: navigation"></nav>
+
+    <p th:unless="${cheeses} and ${cheeses.size()}">No Cheeses :(</p>
+
+    <table class="table" th:if="${cheeses.size() != 0}">
+
+        <tr>
+            <th>Cheese</th>
+            <th>Description</th>
+            <th>Type</th>
+        </tr>
+
+        <tr th:each="cheese : ${cheeses}">
+            <td th:text="${cheese.name}"></td>
+            <td th:text="${cheese.description}"></td>
+            <td th:text="${cheese.type.name}"></td>
+
+        </tr>
+
+    </table>
 
 </body>
 </html>
