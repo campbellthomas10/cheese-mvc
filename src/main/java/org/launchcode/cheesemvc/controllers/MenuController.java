@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -78,18 +75,18 @@ public class MenuController {
     }
 
     @RequestMapping(value="add-item/{id}", method=RequestMethod.POST)
-    public String addItem(Model model, @Valid AddMenuItemForm form, @PathVariable int id, Errors errors) {
+    public String addItem(Model model, @Valid AddMenuItemForm form, @PathVariable int id,
+                          @RequestParam int cheeseId, Errors errors) {
 
         if (errors.hasErrors()) {
             return "menu/add-item";
         }
 
         Menu menu = menuDao.findById(id).orElse(null);
-        Cheese cheese = cheeseDao.findById(form.getCheeseId()).orElse(null);
+        Cheese cheese = cheeseDao.findById(cheeseId).orElse(null);
 
         menu.addItem(cheese);
         menuDao.save(menu);
-
-        return "redirect:view?=" + menu.getId();
+        return "redirect:../view/" + menu.getId();
     }
 }
